@@ -41,6 +41,10 @@ class MenuSpider(scrapy.Spider):
 
         ret["recipe"] = recipe
 
+        # category of secret menu
+        category = response.css(".entry-crumb::text").getall()
+        ret["category"] = category[1]
+
         # images of the secret drink
         images = []
         for image in response.css(".td-post-content img::attr(src)"):
