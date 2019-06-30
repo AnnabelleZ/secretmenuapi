@@ -5,30 +5,40 @@ class MenuSpider(scrapy.Spider):
     name = "menu"
     page_number = 2
 
-    start_urls = ["https://starbuckssecretmenu.net/category/secret-frappuccinos/"]
+    start_urls = ["https://starbuckssecretmenu.net/"]
 
-    def parse(self, response):
+    def parse(self, response): 
+        categ = response.css(".menu-categ-container > ul > li > a::attr(href)").getall()
+        frappuccinos_url = categ[1]
+        drinks_url = categ[2]
+        teas_url = categ[3]
+        yield scrapy.Request(frappuccinos_url, callback=self.parse_page)
+        yield scrapy.Request(drinks_url, callback=self.parse_page)
+        yield scrapy.Request(teas_url, callback=self.parse_page)
+
+
+    def parse_page(self, response):
         for row in response.css(".td-block-span6"):
-            time.sleep(1)
             detail_page = row.css("a::attr(href)").extract_first()
             url = response.urljoin(detail_page)
             yield scrapy.Request(url, callback = self.parse_detail)
             break
 
-        #next_page = "https://starbuckssecretmenu.net/category/secret-frappuccinos/page/" + str(MenuSpider.page_number) + "/"
-        #if menuSpider.page_number <= 21:
-            #MenuSpider.page_number += 1
-        #    yield response.follow(next_page, callback=self.parse)
+        icon = response.css(".td-icon-menu-right").extract_first()
+        if icon is not None:
+            pages = response.css(".td-ss-main-content > div > a::attr(href)").getall()
+            next_page = pages[-1]
+            yield response.follow(next_page, callback=self.parse_page)
 
     def parse_detail(self, response):
         ret = {}
 
         # recipe of secret drink
         recipe = ""
-        time.sleep(5.24)
-        for row in response.css("ul li::text"):
-            recipe += row.get().replace('\n',' ') + '\n'
-        recipe = recipe.strip()
+        time.sleep(5)
+        for row in response.css(".td-post-content ul li::text"):
+            recipe += row.get().replace('\n',' ') + '. '
+        recipe = recipe
 
         # if recipe exists then exit the method
         if not recipe:
