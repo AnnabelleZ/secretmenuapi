@@ -22,7 +22,6 @@ class MenuSpider(scrapy.Spider):
             detail_page = row.css("a::attr(href)").extract_first()
             url = response.urljoin(detail_page)
             yield scrapy.Request(url, callback = self.parse_detail)
-            break
 
         icon = response.css(".td-icon-menu-right").extract_first()
         if icon is not None:
@@ -35,7 +34,7 @@ class MenuSpider(scrapy.Spider):
 
         # recipe of secret drink
         recipe = ""
-        time.sleep(5)
+        time.sleep(12)
         for row in response.css(".td-post-content ul li::text"):
             recipe += row.get().replace('\n',' ') + '. '
         recipe = recipe
