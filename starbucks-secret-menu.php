@@ -47,7 +47,7 @@
 
     try {
       # This is the PHP/SQL connection! :)
-      $sql = "SELECT * FROM testdb WHERE LOWER(name) LIKE ? ORDER BY name ASC;";
+      $sql = "SELECT * FROM SecretMenu WHERE LOWER(name) LIKE ? ORDER BY name ASC;";
 	  $stmt = $db->prepare($sql);
 	  $stmt->execute(["%" . strtolower($keyword) . "%"]);
 	  $rows = $stmt->fetchall();
@@ -84,7 +84,7 @@
 
     try {
       # This is the PHP/SQL connection! :)
-      $sql = "SELECT * FROM testdb WHERE LOWER(category)=? ORDER BY name ASC;";
+      $sql = "SELECT * FROM SecretMenu WHERE LOWER(category)=? ORDER BY name ASC;";
 	  $stmt = $db->prepare($sql);
 	  $stmt->execute([strtolower($categ)]);
 	  $rows = $stmt->fetchall();
@@ -118,7 +118,7 @@
 
     try {
       # This is the PHP/SQL connection! :)
-      $rows = $db->query("SELECT * FROM testdb ORDER BY RAND() LIMIT 1;");
+      $rows = $db->query("SELECT * FROM SecretMenu ORDER BY RAND() LIMIT 1;");
 
     }
     catch (PDOException $ex) {

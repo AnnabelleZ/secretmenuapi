@@ -13,11 +13,11 @@
    */
   function get_PDO() {
     # Variables for connections to the database.
-    $host =  "localhost";
-    $port = "3306";
-    $user = "manduann_scraper";
-    $password = "12345678";
-    $dbname = "manduann_starbuckssecretmenu";
+    $host =  'localhost';
+    $port = '3306';
+    $user = 'manduann_scraper';
+    $password = '12345678';
+    $dbname = 'manduann_starbuckssecretmenu';
 
     # Make a data source string that will be used in creating the PDO object
     $ds = "mysql:host={$host}:{$port};dbname={$dbname};charset=utf8";
