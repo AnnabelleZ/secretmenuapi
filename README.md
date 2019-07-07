@@ -1,2 +1,2 @@
 # secretmenuapi
-starbucks secret menu api
+check out the documentation at https://manduannabelle.com/works/ssm/starbucks-secret-menu.html
