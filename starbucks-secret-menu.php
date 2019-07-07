@@ -20,7 +20,11 @@
 		echo "Please remember to set random=true";
 	  }
 	} else if (isset($_GET["category"])) {
-	  $output = fetch_by_category($db, $_GET["category"]);
+    if ($_GET["category"] == "all") {
+      fetch_all_categories($db);
+    } else {
+	    $output = fetch_by_category($db, $_GET["category"]);
+    }
 	} else if (isset($_GET["keyword"])) {
 	  $output = fetch_by_keyword($db, $_GET["keyword"]);
 	} else {
@@ -32,7 +36,29 @@
 
       # encode the output array as json
       echo json_encode($output);
-    } 
+    }
+  }
+
+  /**
+  *  Print out all the categories in plain text
+  *  @param {object} $db - the PDO object representing the db connection
+  */
+  function fetch_all_categories($db) {
+    try {
+      # This is the PHP/SQL connection! :)
+      $rows = $db->query("SELECT DISTINCT category FROM SecretMenu ORDER BY category ASC;");
+
+    }
+    catch (PDOException $ex) {
+      error_db_message("Can not query the database.");
+    }
+
+    header("Content-Type: text/plain");
+    # loop through each row of data from the select
+    # adding it to the output array
+    foreach ($rows as $row){
+      echo $row["category"] . "\n";
+    }
   }
 
    /**
@@ -139,4 +165,3 @@
 
   }
 ?>
-
